@@ -1,0 +1,5 @@
+ext {
+    springBootVersion = '2.0.1.RELEASE'
+    springCloudVersion = 'Finchley.SR2'
+    springCloudNetfixVersion = '2.0.0.M2'
+}

@@ -1,0 +1,48 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.1.RELEASE'
+        springCloudVersion = 'Finchley.SR2'
+        springCloudNetflixVersion = '2.0.0.M2'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/libs-milestone/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
+apply plugin: 'java'
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+group 'com.sapling'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-netflix:${springCloudNetflixVersion}"
+    }
+}
+
+dependencies {
+    compile 'org.springframework.cloud:spring-cloud-starter-config'
+    compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
+}
+
+
+repositories {
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
+

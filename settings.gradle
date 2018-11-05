@@ -1,0 +1,8 @@
+rootProject.name = 'examples'
+include 'zuul'
+include 'springcloud'
+include 'netflix'
+include 'springcloud-netflix'
+include 'springcloud-config'
+include 'kafka'
+

@@ -1,12 +1,17 @@
 package com.sapling.example.kafka.util;
 
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
+
+import kafka.admin.AdminClient;
 import kafka.admin.AdminUtils;
 import kafka.admin.RackAwareMode;
 import kafka.utils.ZkUtils;
+import scala.Tuple2;
 import scala.collection.JavaConversions;
+import scala.collection.JavaConverters;
 
 import static com.sapling.example.kafka.util.KafkaUtil.*;
 
@@ -72,8 +77,8 @@ public class KafkaTopicUtil {
             }
             zkUtils = getZkUtilsFromZkStr(zk);
             AdminUtils.createTopic(zkUtils, topicInfo.getTopicName(),
-                                   topicInfo.getPartitions(), topicInfo.getReplicationFactor(),
-                                   topicInfo.getTopicConfig(), RackAwareMode.Enforced$.MODULE$);
+                    topicInfo.getPartitions(), topicInfo.getReplicationFactor(),
+                    topicInfo.getTopicConfig(), RackAwareMode.Enforced$.MODULE$);
         } finally {
             releaseZkUtil(zkUtils);
         }
@@ -197,10 +202,20 @@ public class KafkaTopicUtil {
         ZkUtils zkUtils = null;
         try {
             zkUtils = getZkUtilsFromZkStr(zk);
-            return JavaConversions.asJavaList(zkUtils.getAllTopics());
+            return getAllTopics(zkUtils);
         } finally {
             releaseZkUtil(zkUtils);
         }
+    }
+
+    /**
+     * get the topic list of the kafka
+     *
+     * @param zkUtils configuration of zookeeper
+     * @return topic list of kafka
+     */
+    public static List<String> getAllTopics(ZkUtils zkUtils) {
+        return JavaConversions.asJavaList(zkUtils.getAllTopics());
     }
 
     /**
@@ -247,4 +262,136 @@ public class KafkaTopicUtil {
             releaseZkUtil(zkUtils);
         }
     }
+
+
+    public static Map<String, Integer> getAllTopicAndPartition(ZookeeperConfig zookeeperConfig) {
+        Map<String, Integer> result = new HashMap<>();
+        ZkUtils zkUtils = null;
+        try {
+            zkUtils = getZkUtilsFromZkStr(zookeeperConfig);
+            JavaConversions.asJavaSet(zkUtils.getAllPartitions()).forEach(item -> {
+                result.put(item.topic(), item.partition());
+            });
+            return result;
+        } finally {
+            releaseZkUtil(zkUtils);
+        }
+    }
+
+    /**
+     * get the endpoint of the brokers(pattern like "10.10.0.1:9092,10.10.0.2:9092")
+     *
+     * @param zookeeperConfig the configuration of zookeeper{@link ZookeeperConfig}
+     * @return endpoint of the brokers
+     */
+    public static String getBrokerEndpointStr(ZookeeperConfig zookeeperConfig) {
+        ZkUtils zkUtils = null;
+        try {
+            zkUtils = getZkUtilsFromZkStr(zookeeperConfig);
+            StringBuilder sb = new StringBuilder();
+            getBrokers(zkUtils).forEach(item -> {
+                JavaConversions.asJavaList(item.endPoints()).forEach(value -> {
+                    sb.append(value.host()).append(":").append(value.port()).append(",");
+                });
+            });
+            return sb.substring(0, sb.length() - 1);
+        } finally {
+            releaseZkUtil(zkUtils);
+        }
+    }
+
+    /**
+     * get the endpoint list of the brokers
+     *
+     * @param zookeeperConfig the configuration of zookeeper{@link ZookeeperConfig}
+     * @return endpoint list of the brokers
+     */
+    public static List<String> getBrokerEndpoint(ZookeeperConfig zookeeperConfig) {
+        ZkUtils zkUtils = null;
+        try {
+            zkUtils = getZkUtilsFromZkStr(zookeeperConfig);
+            List<String> result = new ArrayList();
+            getBrokers(zkUtils).forEach(item -> {
+                JavaConversions.asJavaList(item.endPoints()).forEach(value -> {
+                    result.add(value.host() + ":" + value.port());
+                });
+            });
+            return result;
+        } finally {
+            releaseZkUtil(zkUtils);
+        }
+    }
+
+
+    /**
+     * get
+     *
+     * @param zookeeperConfig
+     * @param groupId
+     * @return
+     */
+    public static Map<TopicPartition, Long> getAllTopicOffset(ZookeeperConfig zookeeperConfig, String groupId) {
+        Map<TopicPartition, Long> result = new HashMap();
+        AdminClient adminClient = null;
+        try {
+            adminClient = AdminClient.createSimplePlaintext(getBrokerEndpointStr(zookeeperConfig));
+            JavaConversions.asJavaMap(adminClient.listGroupOffsets(groupId)).forEach((key, value) -> {
+                result.put(key, (Long) value);
+            });
+            return result;
+        } finally {
+            adminClient.close();
+        }
+    }
+
+    public static Map<TopicPartition, Long> getTopicOffset(ZookeeperConfig zookeeperConfig, String groupId, String topicName) {
+        Map<TopicPartition, Long> result = new HashMap();
+        AdminClient adminClient = null;
+        try {
+            adminClient = AdminClient.createSimplePlaintext(getBrokerEndpointStr(zookeeperConfig));
+            JavaConversions.asJavaMap(adminClient.listGroupOffsets(groupId)).forEach((key, value) -> {
+                if (key.topic().equals(topicName)) {
+                    result.put(key, (Long) value);
+                }
+            });
+            return result;
+        } finally {
+            adminClient.close();
+        }
+    }
+
+    public static Map listAllConsumerGroups(ZookeeperConfig zookeeperConfig) {
+        AdminClient adminClient = null;
+        try {
+            adminClient = AdminClient.createSimplePlaintext(getBrokerEndpointStr(zookeeperConfig));
+            return JavaConversions.asJavaMap(adminClient.listAllConsumerGroups());
+        } finally {
+            adminClient.close();
+        }
+    }
+
+    public static Map listAllConsumerGroupsByBrokers(String brokers) {
+        AdminClient adminClient = null;
+        try {
+            adminClient = AdminClient.createSimplePlaintext(brokers);
+            return JavaConversions.asJavaMap(adminClient.listAllConsumerGroups());
+        } finally {
+            adminClient.close();
+        }
+    }
+
+    public static Set<String> listAllTopicFromBrokers(String brokers, String groupId) {
+        Properties properties = makeConsumerProperties(brokers, groupId);
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
+        try {
+            return consumer.listTopics().keySet();
+        } finally {
+            consumer.close();
+        }
+    }
+
+
+
+
+
 }

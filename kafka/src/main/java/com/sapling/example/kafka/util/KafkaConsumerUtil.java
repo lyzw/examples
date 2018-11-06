@@ -16,17 +16,18 @@ import static com.sapling.example.kafka.util.KafkaUtil.*;
  */
 public class KafkaConsumerUtil {
 
-
-    public static Set<String> getAllConsumerGroupsForTopic(ZookeeperConfig zk, String topicName){
-        ZkUtils zkUtils = null;
-        try {
-            zkUtils = getZkUtilsFromZkStr(zk);
-            checkTopicIsExists(zkUtils, topicName);
-            return JavaConversions.asJavaSet(zkUtils.getAllConsumerGroupsForTopic(topicName));
-        } finally {
-            releaseZkUtil(zkUtils);
-        }
-    }
+//
+//    public static Set<String> getAllConsumerGroupsForTopic(ZookeeperConfig zk, String topicName) {
+//        ZkUtils zkUtils = null;
+//        try {
+//            zkUtils = getZkUtilsFromZkStr(zk);
+//            checkTopicIsExists(zkUtils, topicName);
+//            //            不能用ZkUtils的getAllConsumerGroupsForTopic，一旦有zookeeper中的数据存在异常，将导致整个报错
+//            //            return JavaConversions.asJavaSet(zkUtils.getAllConsumerGroupsForTopic(topicName));
+//        } finally {
+//            releaseZkUtil(zkUtils);
+//        }
+//    }
 
 
 }

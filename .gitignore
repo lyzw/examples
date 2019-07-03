@@ -3,3 +3,8 @@
 /gradle/
 *.bat
 /gradlew
+/out/
+/build/
+/*/build/
+/*/out/
+*.class

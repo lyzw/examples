@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: springboot-ExampleApplication
+  datasource:
+    url: jdbc:mysql://192.168.31.46:3306/itoa_base?characterEncoding=utf8&useSSL=false
+    username: root
+    password: User@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+

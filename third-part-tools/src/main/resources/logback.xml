@@ -1,0 +1,36 @@
+<configuration>
+  　　　
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+    </encoder>
+    　　　
+  </appender>
+  <appender name="socket" class="ch.qos.logback.classic.net.SocketAppender">
+    <encoder>
+      <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+    </encoder>
+    <includeCallerData>true</includeCallerData>
+    <!--The host name of the server -->
+    <remoteHost>127.0.0.1</remoteHost>
+    <!--default port is 4560 -->
+    <port>4560</port>
+    <!--default is 30 seconds-->
+    <reconnectionDelay>30 seconds</reconnectionDelay>
+    <!--default queue size is 128 -->
+    <queueSize>128</queueSize>
+    <!--timeout for how long to wait when inserting an event into the BlockingQueue-->
+    <!--default value is 100 milliseconds -->
+    <eventDelayLimit>100 milliseconds</eventDelayLimit>
+    <ssl>
+
+    </ssl>
+  </appender>
+
+  　　　
+  <root level="DEBUG">
+    　　　　　　
+    <appender-ref ref="STDOUT"/>
+    　　　
+  </root>
+</configuration>

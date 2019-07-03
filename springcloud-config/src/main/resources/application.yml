@@ -11,8 +11,8 @@ spring:
         git:
           uri: https://github.com/lyzw/config_resp.git
           searchPaths: '{application}'
-          username: xxxxxxxxxxxx
-          password: xxxxxxxxxxxx
+          username: lyz_w@163.com
+          password: zhouwei123
 eureka:
   instance:
     hostname: eureka1

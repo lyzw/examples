@@ -1,0 +1,18 @@
+server:
+  port: 12000
+eureka:
+  client:
+    preferSameZoneEureka: true
+  instance:
+    zone: zone1
+management:
+  security:
+    enabled: false
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: application/routes
+
+
+

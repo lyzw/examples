@@ -1,0 +1,39 @@
+apply from: "${project.projectDir}/common.gradle"
+buildscript {
+    apply from: "${project.projectDir}/common.gradle"
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/libs-milestone/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE"
+    }
+}
+
+apply plugin: "java"
+apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
+
+group 'com.sapling'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile project(":common")
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile files('lib/itoaFilterlib-1.0.2.jar')
+    // https://mvnrepository.com/artifact/org.scala-lang/scala-library
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.11.12'
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.7'
+
+}

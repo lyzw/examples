@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+  <!--<Properties>
+    <Property name="appName">log4j-appender</Property>
+    <Property name="jsonLayout">
+      <JsonLayout compact="true" eventEol="true"
+                  includeStacktrace="true"
+                  stacktraceAsString="true">
+        <KeyValuePair key="appName" value="${appName}"/>
+      </JsonLayout>
+    </Property>
+    <Property name="patternLayout">
+      %d{yyyy-MM-dd HH:mm:mm:ss.SSS} [%} [%t] %-5level %logger{36} - %ex%msg%n
+    </Property>
+  </Properties>
+  <Appenders>
+    &lt;!&ndash;console appender &ndash;&gt;
+    <Console name="Console" target="SYSTEM_OUT" >
+      <PatternLayout pattern="${patternLayout}"/>
+    </Console>
+    &lt;!&ndash; socket appender &ndash;&gt;
+    <Socket name="socket" host="localhost" port="4560">
+      <JsonLayout>
+        ${jsonLayout}
+      </JsonLayout>
+      <PatternLayout
+              pattern="%d{yyyy-MM-dd HH:mm:mm:ss.SSS} [%} [%t] %-5level %logger{36} - %ex%msg%n"/>
+    </Socket>
+    <Kafka name="Kafka" topic="log-test2">
+      <LevelRangeFilter minLevel="ERROR" maxLevel="WARN"
+                        onMatch="ACCEPT">
+      </LevelRangeFilter>
+      <JsonLayout>
+        ${jsonLayout}
+      </JsonLayout>
+      <Property name="bootstrap.servers">192.168.21.95:9092, 192.168.21.96:9092, 192.168.21.97:9092</Property>
+    </Kafka>
+  </Appenders>-->
+
+
+<!--
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Kafka"/>
+      <AppenderRef ref="Console"/>
+&lt;!&ndash;
+      <AppenderRef ref="socket"/>
+&ndash;&gt;
+    </Root>
+  </Loggers>-->
+
+    <Appenders>
+      <File name="MyFile" fileName="logs/app.log">
+        <PatternLayout>
+          <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+        </PatternLayout>
+      </File>
+    </Appenders>
+    <Loggers>
+      <Root level="info">
+        <AppenderRef ref="MyFile"/>
+      </Root>
+    </Loggers>
+</Configuration>

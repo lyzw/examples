@@ -1,0 +1,43 @@
+apply from: "${parent.projectDir}/common.gradle"
+buildscript {
+    apply from: "${parent.projectDir}/common.gradle"
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/libs-milestone/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE"
+    }
+}
+
+apply plugin: "java"
+apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
+
+group 'com.sapling'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-netflix:${springCloudNetfixVersion}"
+    }
+}
+dependencies {
+    compile project(":common")
+
+    implementation "org.springframework.cloud:spring-cloud-starter-eureka"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-cloud-starter-feign'
+
+}
+
+repositories {
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}

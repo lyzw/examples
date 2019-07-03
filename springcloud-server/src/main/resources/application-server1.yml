@@ -1,0 +1,10 @@
+server:
+  port: 10000
+eureka:
+  client:
+    preferSameZoneEureka: true
+  instance:
+    zone: zone1
+
+
+

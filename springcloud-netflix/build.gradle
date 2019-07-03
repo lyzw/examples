@@ -1,6 +1,6 @@
-apply from: "${project.projectDir}/common.gradle"
+apply from: "${parent.projectDir}/common.gradle"
 buildscript {
-    apply from: "${project.projectDir}/common.gradle"
+    apply from: "${parent.projectDir}/common.gradle"
 
     repositories {
         mavenCentral()

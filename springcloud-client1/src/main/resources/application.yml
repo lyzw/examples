@@ -1,0 +1,31 @@
+server:
+  port: 11000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
+    preferSameZoneEureka: true
+
+  instance:
+    instanceId: ${spring.cloud.client.hostname}:${server.port}:${spring.application.name}:${spring.application.instance_id:123}
+    prefer-ip-address: true
+    metadataMap:
+      zone: zone1
+management:
+  security:
+    enabled: false
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: hystrix.stream
+ribbon:
+  eager-load:
+    enabled: false
+
+
+
+
+

@@ -1,18 +1,9 @@
 package com.sapling.example.springboot.example;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Properties;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-
-import com.sapling.common.tools.file.FileUtil;
-import com.sapling.common.tools.io.StreamUtil;
 
 /**
  * @author weizhou
@@ -31,7 +22,7 @@ public class ExampleApplication {
 //        while (urls.hasMoreElements()){
 //            try {
 //                UrlResource resource = new UrlResource(urls.nextElement().getPath());
-////                System.out.println(StreamUtil.toString(resource.getInputStream()));
+////                System.out.println(IoStreamUtil.toString(resource.getInputStream()));
 //                System.out.println(PropertiesLoaderUtils.loadProperties(resource));
 //            }catch (Exception e){
 //                e.printStackTrace();

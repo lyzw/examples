@@ -1,7 +1,7 @@
 package com.sapling.http.common.request;
 
 /**
- * @author wei.zhou02
+ * @author zhouwei
  * @date 2019/4/28 15:33
  */
 public class BaseRequest {
@@ -13,6 +13,8 @@ public class BaseRequest {
     private int version;
 
     private Object data;
+
+    private String sign;
 
     public long getTimestamp() {
         return timestamp;
@@ -38,4 +40,11 @@ public class BaseRequest {
         this.data = data;
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
 }

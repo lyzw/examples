@@ -1,7 +1,7 @@
 package com.sapling.common.tools.security;
 
 import com.sapling.common.tools.common.ByteUtil;
-import com.sapling.common.tools.io.StreamUtil;
+import com.sapling.common.tools.io.IoStreamUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -103,7 +103,7 @@ public class MD5Util {
         try {
             MessageDigest md = MessageDigest.getInstance(DIGEST_MD5);
             FileInputStream fileInputStream = new FileInputStream(file);
-            byte[] bytes = StreamUtil.toBytes(fileInputStream);
+            byte[] bytes = IoStreamUtil.toBytes(fileInputStream);
             return ByteUtil.bytesToHex(md.digest(bytes));
         } catch (IOException e) {
             e.printStackTrace();

@@ -20,7 +20,7 @@ public class StreamUtilTest {
     @Test
     public void toString2() throws IOException {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("你好，sssss".getBytes("utf-8"));
-        System.out.println(StreamUtil.toString(byteArrayInputStream));
+        System.out.println(IoStreamUtil.toString(byteArrayInputStream));
     }
 
     @Test

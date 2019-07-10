@@ -13,7 +13,7 @@ import java.io.OutputStream;
  * @date 2018/6/20
  * @since v1.0
  */
-public class StreamUtil {
+public class IoStreamUtil {
 
     /**
      * 默认字符集

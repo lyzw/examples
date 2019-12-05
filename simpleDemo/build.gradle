@@ -29,7 +29,7 @@ targetCompatibility = 1.8
 //    }
 //}
 dependencies {
-    compile 'org.springframework.amqp:spring-rabbit:2.1.6.RELEASE'
+//    compile 'org.springframework.amqp:spring-rabbit:2.1.6.RELEASE'
 
 //    compile 'org.springframework.boot:spring-boot-starter-web'
 //    compile 'com.eoi:itoaFilterlib:1.0.3.0'

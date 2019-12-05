@@ -25,4 +25,5 @@ include 'springcloud-server'
 include 'springcloud-zuul'
 include 'codegenerator'
 include 'monitor'
+include 'base-example'
 
